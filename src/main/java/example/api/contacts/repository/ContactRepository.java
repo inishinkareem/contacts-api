@@ -8,4 +8,6 @@ import example.api.contacts.model.Contact;
 @Repository
 public interface ContactRepository extends JpaRepository<Contact, Long>{
 
+  boolean existsByEmail(String email);
+
 }

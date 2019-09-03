@@ -8,6 +8,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 
 import org.slf4j.Logger;
@@ -72,16 +73,19 @@ public class ContactServiceImpl implements ContactService{
       phoneToUpdate.add(phone);
     });
     contact.setPhone(phoneToUpdate);
-     contactRepository.save(contact);
-    logger.info("Contact has been added with email {}", contact.getEmail());
+    if(!contactRepository.existsByEmail(contact.getEmail())) {
+      contactRepository.save(contact);
+      logger.info("Contact has been added with email {}", contact.getEmail());
+    } else
+        throw new EntityExistsException("there is a contact by this email");
   }
 
   @Override
   public void updateContact(Long id, Contact contact) {
     contact.setId(id);
     if(contactRepository.existsById(id)) {
-      logger.info("Contact with id={} has been updated",id);
       contactRepository.save(contact);
+      logger.info("Contact with id={} has been updated",id);
     }
     else
     {

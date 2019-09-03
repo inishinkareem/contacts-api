@@ -3,6 +3,7 @@ package example.api.contacts.exception;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 
 import org.slf4j.Logger;
@@ -20,7 +21,9 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 @ControllerAdvice
 public class ContactExceptionHandler extends ResponseEntityExceptionHandler{
+  
   Logger log = LoggerFactory.getLogger(ContactExceptionHandler.class);
+  
   @ExceptionHandler(EntityNotFoundException.class)
   protected ResponseEntity<Object> handleEntityNotFound(
       EntityNotFoundException ex) {
@@ -40,6 +43,15 @@ public class ContactExceptionHandler extends ResponseEntityExceptionHandler{
     Error error = new Error(HttpStatus.BAD_REQUEST);
     error.setMessage(errorList.toString());
     log.error("Bad Request {}",error.getMessage());
+    return buildResponseEntity(error);
+  }
+  
+  @ExceptionHandler(EntityExistsException.class)
+  protected ResponseEntity<Object> handleEntityExists(
+      EntityExistsException ex) {
+    Error error = new Error(HttpStatus.BAD_REQUEST);
+    error.setMessage(ex.getMessage());
+    log.error("{}",error.getMessage());
     return buildResponseEntity(error);
   }
 

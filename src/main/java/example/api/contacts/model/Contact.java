@@ -26,46 +26,62 @@ public class Contact {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private Long id;
-  
+
   @Embedded
   @Valid
   @NotNull
   @AttributeOverrides(value = {
-  @AttributeOverride(name = "first", column = @Column(name="first_name")),
-  @AttributeOverride(name = "middle", column = @Column(name="middle_name")),
-  @AttributeOverride(name = "last", column = @Column(name="last_name"))
+      @AttributeOverride(name = "first", column = @Column(name="first_name")),
+      @AttributeOverride(name = "middle", column = @Column(name="middle_name")),
+      @AttributeOverride(name = "last", column = @Column(name="last_name"))
   })
   private Name name;
-  
+
   @Embedded
   @Valid
   @NotNull
   private Address address;
-  
+
   @OneToMany(mappedBy = "contact", cascade = CascadeType.ALL)
   @Valid
-  @NotEmpty
+  @NotNull
   private Set<Phone> phone;
-  
+
   @Column(name = "email", unique = true)
   @Email(message = "Invalid email")
   @Size(max = 100)
   @NotNull
   private String email;
-  
-  
+
+
 
   public Contact() {
     super();
   }
 
-  public Contact(Name name, Address address, String email, Set<Phone> phone ) {
+
+
+  public Contact(@Valid @NotNull Name name, @Valid @NotNull Address address,
+      @Email(message = "Invalid email") @Size(max = 100) @NotNull String email) {
     super();
     this.name = name;
     this.address = address;
     this.email = email;
-    this.phone = phone;
   }
+
+
+
+
+  public Contact(@Valid @NotNull Name name, @Valid @NotNull Address address, @Valid @NotEmpty Set<Phone> phone,
+      @Email(message = "Invalid email") @Size(max = 100) @NotNull String email) {
+    super();
+    this.name = name;
+    this.address = address;
+    this.phone = phone;
+    this.email = email;
+  }
+
+
 
   public Long getId() {
     return id;
@@ -105,6 +121,14 @@ public class Contact {
 
   public void setEmail(String email) {
     this.email = email;
+  }
+
+
+
+  @Override
+  public String toString() {
+    return "Contact [id=" + id + ", name=" + name + ", address=" + address + ", phone=" + phone + ", email=" + email
+        + "]";
   }
 
 }
