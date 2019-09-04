@@ -44,7 +44,6 @@ public class ValidationUnitTests {
   public void addContactEmailNullValidation() throws Exception {
     ObjectMapper objectMapper = new ObjectMapper();
     Set<Phone> phoneSet1 = new HashSet<>();
-    //incorrect email
     Contact contact1 = new Contact(new Name("John", "A", "Tyler"), new Address("West Creek", "Henrico", "Virginia", "23233"), null);
     phoneSet1.add(new Phone("804-352-4544","mobile"));
     contact1.setPhone(phoneSet1);
@@ -53,14 +52,13 @@ public class ValidationUnitTests {
         .contentType(MediaType.APPLICATION_JSON)
         .content(objectMapper.writeValueAsString(contact1)))
     .andExpect(status().isBadRequest())
-    .andExpect(jsonPath("$.message").value("[email : must not be null ]"));
+    .andExpect(jsonPath("$.message").value("[email : must not be empty ]"));
   }
   
   @Test
   public void addContactEmailFormatValidation() throws Exception {
     ObjectMapper objectMapper = new ObjectMapper();
     Set<Phone> phoneSet1 = new HashSet<>();
-    //incorrect email
     Contact contact1 = new Contact(new Name("John", "A", "Tyler"), new Address("West Creek", "Henrico", "Virginia", "23233"), "johnhotmail.com");
     phoneSet1.add(new Phone("804-352-4544","mobile"));
     contact1.setPhone(phoneSet1);
@@ -76,7 +74,6 @@ public class ValidationUnitTests {
   public void addContactNulNameValidation() throws Exception {
     ObjectMapper objectMapper = new ObjectMapper();
     Set<Phone> phoneSet1 = new HashSet<>();
-    //missing first name
     Contact contact1 = new Contact(null, new Address("West Creek", "Henrico", "Virginia", "23233"), "john@hotmail.com");
     phoneSet1.add(new Phone("804-352-4544","mobile"));
     contact1.setPhone(phoneSet1);
@@ -92,7 +89,6 @@ public class ValidationUnitTests {
   public void addContactFirstNameValidation() throws Exception {
     ObjectMapper objectMapper = new ObjectMapper();
     Set<Phone> phoneSet1 = new HashSet<>();
-    //missing first name
     Contact contact1 = new Contact(new Name("", "A", "Tyler"), new Address("West Creek", "Henrico", "Virginia", "23233"), "john@hotmail.com");
     phoneSet1.add(new Phone("804-352-4544","mobile"));
     contact1.setPhone(phoneSet1);
@@ -108,7 +104,6 @@ public class ValidationUnitTests {
   public void addContactMiddleNameValidation() throws Exception {
     ObjectMapper objectMapper = new ObjectMapper();
     Set<Phone> phoneSet1 = new HashSet<>();
-    //missing first name
     Contact contact1 = new Contact(new Name("John", "", "Gilkey"), new Address("West Creek", "Henrico", "Virginia", "23233"), "john@hotmail.com");
     phoneSet1.add(new Phone("804-352-4544","mobile"));
     contact1.setPhone(phoneSet1);
@@ -123,7 +118,6 @@ public class ValidationUnitTests {
   public void addContactLastNameValidation() throws Exception {
     ObjectMapper objectMapper = new ObjectMapper();
     Set<Phone> phoneSet1 = new HashSet<>();
-    //missing first name
     Contact contact1 = new Contact(new Name("John", "Hay", ""), new Address("West Creek", "Henrico", "Virginia", "23233"), "john@hotmail.com");
     phoneSet1.add(new Phone("804-352-4544","mobile"));
     contact1.setPhone(phoneSet1);
@@ -142,7 +136,6 @@ public class ValidationUnitTests {
   public void addContactAddressNullValidation() throws Exception {
     ObjectMapper objectMapper = new ObjectMapper();
     Set<Phone> phoneSet1 = new HashSet<>();
-    //incorrect address
     Contact contact1 = new Contact(new Name("John", "A", "Tyler"), null, "john@hotmail.com");
     phoneSet1.add(new Phone("804-352-4544","mobile"));
     contact1.setPhone(phoneSet1);
@@ -158,7 +151,6 @@ public class ValidationUnitTests {
   public void addContactAddressStreetValidation() throws Exception {
     ObjectMapper objectMapper = new ObjectMapper();
     Set<Phone> phoneSet1 = new HashSet<>();
-    //incorrect address
     Contact contact1 = new Contact(new Name("John", "A", "Tyler"), new Address("", "Henrico", "Virginia", "23233"), "john@hotmail.com");
     phoneSet1.add(new Phone("804-352-4544","mobile"));
     contact1.setPhone(phoneSet1);
@@ -174,7 +166,6 @@ public class ValidationUnitTests {
   public void addContactAddressCityValidation() throws Exception {
     ObjectMapper objectMapper = new ObjectMapper();
     Set<Phone> phoneSet1 = new HashSet<>();
-    //incorrect address
     Contact contact1 = new Contact(new Name("John", "A", "Tyler"), new Address("test", "", "Virginia", "23233"), "john@hotmail.com");
     phoneSet1.add(new Phone("804-352-4544","mobile"));
     contact1.setPhone(phoneSet1);
@@ -190,7 +181,6 @@ public class ValidationUnitTests {
   public void addContactAddressStateValidation() throws Exception {
     ObjectMapper objectMapper = new ObjectMapper();
     Set<Phone> phoneSet1 = new HashSet<>();
-    //incorrect address
     Contact contact1 = new Contact(new Name("John", "A", "Tyler"), new Address("test", "test", "", "23233"), "john@hotmail.com");
     phoneSet1.add(new Phone("804-352-4544","mobile"));
     contact1.setPhone(phoneSet1);
@@ -206,7 +196,6 @@ public class ValidationUnitTests {
   public void addContactAddressZipValidation() throws Exception {
     ObjectMapper objectMapper = new ObjectMapper();
     Set<Phone> phoneSet1 = new HashSet<>();
-    //incorrect address
     Contact contact1 = new Contact(new Name("John", "A", "Tyler"), new Address("test", "test", "test", ""), "john@hotmail.com");
     phoneSet1.add(new Phone("804-352-4544","mobile"));
     contact1.setPhone(phoneSet1);

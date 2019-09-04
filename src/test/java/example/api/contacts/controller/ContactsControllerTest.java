@@ -64,14 +64,16 @@ public class ContactsControllerTest {
   @Test
   public void getContactsWithDataTest() throws Exception {
     Contact contact1 = new Contact(new Name("John", "A", "Tyler"), new Address("West Creek", "Henrico", "Virginia", "23233"), "john@hotmail.com");
-    Phone phone1 = new Phone("mobile", "804-352-4544", contact1);
+    Phone phone1 = new Phone("mobile", "804-352-4544");
+    phone1.setContact(contact1);
     Set<Phone> phoneSet1 = new HashSet<>();
     phoneSet1.add(phone1);
     contact1.setPhone(phoneSet1);
 
 
     Contact contact2 = new Contact(new Name("Mike", "", "Patterson"), new Address("M2", "Henrico", "Virginia", "23294"), "mike@gmail.com");
-    Phone phone2 = new Phone("work", "804-564-2323", contact2);
+    Phone phone2 = new Phone("work", "804-564-2323");
+    phone2.setContact(contact2);
     Set<Phone> phoneSet2 = new HashSet<>();
     phoneSet2.add(phone2);
     contact2.setPhone(phoneSet2);
@@ -107,7 +109,8 @@ public class ContactsControllerTest {
   @Test
   public void getAContactSuccess() throws Exception {
     Contact contact1 = new Contact(new Name("John", "A", "Tyler"), new Address("West Creek", "Henrico", "Virginia", "23233"), "john@hotmail.com");
-    Phone phone1 = new Phone("mobile", "804-352-4544", contact1);
+    Phone phone1 = new Phone("mobile", "804-352-4544");
+    phone1.setContact(contact1);
     Set<Phone> phoneSet1 = new HashSet<>();
     phoneSet1.add(phone1);
     contact1.setPhone(phoneSet1);
