@@ -2,6 +2,8 @@ package example.api.contacts.controller;
 
 import java.util.List;
 
+import javax.persistence.EntityExistsException;
+import javax.persistence.EntityNotFoundException;
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
@@ -18,6 +20,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import example.api.contacts.model.Contact;
 import example.api.contacts.service.ContactService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 @RestController
 @RequestMapping("/api/contacts")
@@ -29,29 +35,89 @@ public class ContactsController {
     this.contactService = contactService;
   }
 
+  /** 
+   * 
+   * Find all Contacts
+   * 
+   */
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+  @ApiOperation(value = "Finds all the Contacts within the system",
+  produces = "application/json",
+  response = List.class)
   public List<Contact> getContacts() {
     return contactService.getContacts();
   }
 
+  /** 
+   * 
+   * Add a Contact
+   * @param @contact
+   * @throws EntityExistsException for contacts duplicate email address
+   * 
+   */
   @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
   @ResponseStatus(code = HttpStatus.CREATED)
+  @ApiOperation(value = "Add a Contact to the system",
+  consumes = "application/json")
+  @ApiResponses(value = {
+      @ApiResponse(code = 201, message = "Contact Added"), 
+      @ApiResponse(code = 401, message = "Contact Already Exists")})
   public void addContact(@Valid @RequestBody Contact contact) {
      contactService.addContact(contact);
   }
 
+  
+  /** 
+   * 
+   * Update an existing Contact by Id
+   * @param @contact, id
+   * @throws EntityNotFoundException for contacts that doesn't exist
+   * 
+   */
   @PutMapping(path = "/{id}",consumes = MediaType.APPLICATION_JSON_VALUE)
+  @ApiOperation(value = "Update an existing Contact",
+  consumes = "application/json")
+  @ApiResponses(value = {
+      @ApiResponse(code = 200, message = "Contact updated"), 
+      @ApiResponse(code = 401, message = "Contact doesnt exist")})
   public void updateContact(@Valid @RequestBody Contact contact, @PathVariable(name = "id") Long id) {
     contactService.updateContact(id, contact);
   }
 
+  /** 
+   * 
+   * find an existing Contact by Id
+   * @param id
+   * @throws EntityNotFoundException for contacts that doesn't exist
+   * 
+   */
   @GetMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-  public Contact getContact(@PathVariable(name = "id") Long id) {
+  @ApiOperation(value = "Finds Contacts by id",
+  notes = "Provide an id to look up specific contact in the system",
+  produces = "application/json",
+  response = Contact.class)
+  @ApiResponses(value = {
+      @ApiResponse(code = 200, message = "Contact found"), 
+      @ApiResponse(code = 404, message = "Contact not found")})
+  public Contact getContact(@ApiParam(value = "Id of the contact to be deleted", required = true) @PathVariable(name = "id") Long id) {
     return contactService.getContact(id);
   }
 
+  
+  /** 
+   * 
+   * delete an existing Contact by Id
+   * @param id
+   * @throws EntityNotFoundException for contacts that doesn't exist
+   * 
+   */
   @DeleteMapping(path = "/{id}")
-  public void deleteContact(@PathVariable(name = "id") Long id) {
+  @ApiOperation(value = "Deletes Contacts by id",
+  notes = "Provide an id to delete specific contact in the system")
+  @ApiResponses(value = {
+      @ApiResponse(code = 200, message = "Contact Deleted"), 
+      @ApiResponse(code = 404, message = "Contact not found")})
+  public void deleteContact(@ApiParam(value = "Id of the contact to be deleted", required = true) @PathVariable(name = "id") Long id) {
     contactService.deleteContact(id);
   }
 
