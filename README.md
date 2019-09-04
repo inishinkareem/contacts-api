@@ -19,11 +19,15 @@ mvn spring-boot:run
 
 ## Logs
 
-logs folder is located in the root folder - **contact-api-logger.log**
+logs folder is located in the root folder
+```bash
+cd logs
+cat contacts-api.log
+```
 
 ## Swagger API Doc
 
-```url
+```
 http://localhost:8080/swagger-ui.html
 ```
 
