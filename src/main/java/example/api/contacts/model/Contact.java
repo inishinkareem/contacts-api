@@ -50,7 +50,7 @@ public class Contact {
   @Column(name = "email", unique = true)
   @Email(message = "Invalid email")
   @Size(max = 100)
-  @NotNull
+  @NotEmpty
   private String email;
 
 

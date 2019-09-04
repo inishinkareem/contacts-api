@@ -61,8 +61,8 @@ public class ContactsController {
   consumes = "application/json")
   @ApiResponses(value = {
       @ApiResponse(code = 201, message = "Contact Added"), 
-      @ApiResponse(code = 401, message = "Contact Already Exists")})
-  public void addContact(@Valid @RequestBody Contact contact) {
+      @ApiResponse(code = 400, message = "Contact Already Exists/Validation error")})
+  public void addContact(@ApiParam(value = "Contact to be added", required = true) @Valid @RequestBody(required = true) Contact contact) {
      contactService.addContact(contact);
   }
 
@@ -79,8 +79,10 @@ public class ContactsController {
   consumes = "application/json")
   @ApiResponses(value = {
       @ApiResponse(code = 200, message = "Contact updated"), 
-      @ApiResponse(code = 401, message = "Contact doesnt exist")})
-  public void updateContact(@Valid @RequestBody Contact contact, @PathVariable(name = "id") Long id) {
+      @ApiResponse(code = 404, message = "Contact doesnt exist"),
+      @ApiResponse(code = 400, message = "Validation error")})
+  public void updateContact(@ApiParam(value = "updated Contact", required = true) @Valid @RequestBody(required = true) Contact contact, 
+      @ApiParam(value = "Id of the contact to be updated", required = true)  @PathVariable(name = "id", required = true) Long id) {
     contactService.updateContact(id, contact);
   }
 
@@ -99,7 +101,7 @@ public class ContactsController {
   @ApiResponses(value = {
       @ApiResponse(code = 200, message = "Contact found"), 
       @ApiResponse(code = 404, message = "Contact not found")})
-  public Contact getContact(@ApiParam(value = "Id of the contact to be deleted", required = true) @PathVariable(name = "id") Long id) {
+  public Contact getContact(@ApiParam(value = "Id of the contact to be viewed", required = true) @PathVariable(name = "id", required = true) Long id) {
     return contactService.getContact(id);
   }
 
